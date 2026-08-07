@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos | Senai Connect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+   <link rel="stylesheet" href="eventos.css">
+</head>
+
+<body>
+    <header class="topo">
+        <a class="marca" href="interno.html" aria-label="Página inicial do Senai Connect">
+            <span class="Logo">
+                <img src="https://i.ibb.co/xqQp0Z7V/Chat-GPT-Image-30-de-jul-de-2026-11-08-57.png" alt="Logo">
+            </span>
+            <strong>Senai Connect</strong>
+        </a>
+
+        <label class="pesquisa" for="busca">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input id="busca" type="search" placeholder="Pesquisar eventos, oficinas e palestras">
+        </label>
+
+        <div class="acoes-topo">
+            <button id="abrir-mensagens" type="button" aria-label="Mensagens"><a href="mensagens.html"><i
+                        class="fa-regular fa-comment-dots"></i></a></button>
+            <button id="abrir-notificacoes" type="button" aria-label="Notificações"><i
+                    class="fa-regular fa-bell"></i><span id="contador-notificacoes"
+                    class="notificacao">3</span></button>
+            <button id="perfil-topo" class="perfil-topo" type="button" onclick="window.location.href='perfil.html'">
+                <span class="avatar mini" id="avatar-topo">E</span>
+                <span id="nome-topo">everton</span>
+            </button>
+            <button id="sair" class="sair" type="button">Sair</button>
+        </div>
+         <nav>
+                <a href="interno.html"><i class="Inicio1"></i><span>Início</span></a>
+            </nav>
+    </header>
+
+        <section class="feed" aria-label="Eventos do SENAI">
+            <!-- Hero -->
+            <section class="hero-eventos">
+                <p class="eyebrow">Sua comunidade acadêmica</p>
+                <h1>Eventos SENAI</h1>
+                <p>Participe de apresentações, oficinas, palestras e encontros da comunidade. Fique por dentro de tudo que acontece no SENAI.</p>
+                <i class="fa-solid fa-calendar-check icon-hero"></i>
+            </section>
+
+            <!-- Filtros -->
+            <div class="tabs-eventos">
+                <button class="tab-evento ativo" data-filtro="todos">Todos</button>
+                <button class="tab-evento" data-filtro="apresentacao">Apresentações</button>
+                <button class="tab-evento" data-filtro="oficina">Oficinas</button>
+                <button class="tab-evento" data-filtro="palestra">Palestras</button>
+                <button class="tab-evento" data-filtro="hackathon">Hackathons</button>
+                <button class="tab-evento" data-filtro="institucional">Institucional</button>
+                <button class="tab-evento" data-filtro="exibicao">Exibições</button>
+            </div>
+
+            <!-- Grid de eventos -->
+            <div class="grid-eventos" id="grid-eventos"></div>
+
+            <!-- Seção de Apresentações de Turma -->
+            <section class="secao-apresentacoes" id="apresentacoes-secao">
+                <h2><i class="fa-solid fa-chalkboard"></i> Apresentações de Turma</h2>
+                <div id="lista-apresentacoes"></div>
+            </section>
+        </section>
+
+        <aside class="lateral-direita">
+            <!-- Mini Calendário -->
+            <section class="calendario-mini">
+                <h3><i class="fa-regular fa-calendar"></i> Agosto 2026</h3>
+                <div class="mes-navegacao">
+                    <button id="mes-anterior"><i class="fa-solid fa-chevron-left"></i></button>
+                    <strong>Agosto 2026</strong>
+                    <button id="mes-proximo"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+                <div class="dias-grid" id="dias-grid"></div>
+            </section>
+
+            <!-- Próximos Eventos -->
+            <section class="card-lateral">
+                <div class="titulo-card">
+                    <h2>Próximos eventos</h2><a href="#">Agenda</a>
+                </div>
+                <div class="timeline-eventos" id="timeline-eventos"></div>
+            </section>
+
+            <!-- Estatísticas -->
+            <section class="card-lateral">
+                <div class="titulo-card">
+                    <h2>Suas participações</h2>
+                </div>
+                <div class="stats-row">
+                    <span>Eventos confirmados</span>
+                    <strong>3</strong>
+                </div>
+                <div class="stats-row">
+                    <span>Apresentações dadas</span>
+                    <strong>1</strong>
+                </div>
+                <div class="stats-row">
+                    <span>Certificados</span>
+                    <strong>5</strong>
+                </div>
+                <div class="stats-row">
+                    <span>Horas de atividade</span>
+                    <strong>42h</strong>
+                </div>
+            </section>
+        </aside>
+    </main>
+
+    <!-- Modal de Detalhes do Evento -->
+    <div class="modal-evento" id="modal-evento-detalhe">
+        <div class="modal-evento-conteudo">
+            <button class="modal-fechar" id="fechar-modal-evento" aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-evento-capa" id="modal-evento-capa"></div>
+            <div class="modal-evento-corpo">
+                <span class="evento-tag" id="modal-evento-tag"></span>
+                <h2 id="modal-evento-titulo"></h2>
+                <div class="meta-detalhe" id="modal-evento-meta"></div>
+                <p class="descricao" id="modal-evento-descricao"></p>
+                <div class="programacao">
+                    <h4>Programação</h4>
+                    <div id="modal-evento-programa"></div>
+                </div>
+                <button class="btn-participar" id="modal-evento-btn" style="width:100%; margin-top: 18px; padding: 12px;">
+                    Confirmar Participação
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        // ===== VERIFICAR SESSÃO =====
+        (async function() {
+            const sessao = getSessao();
+            if (!sessao || !getToken()) {
+                window.location.replace("login.html");
+                return;
+            }
+            try {
+                await apiValidarSessao();
+            } catch {
+                window.location.replace("login.html");
+                return;
+            }
+
+            // Atualizar nome do usuário no topo
+            const usuario = getSessao();
+            if (usuario) {
+                const inicial = usuario.nome.charAt(0).toUpperCase();
+                const primeiroNome = usuario.nome.split(" ")[0];
+                const avatarTopo = document.querySelector("#avatar-topo");
+                const nomeTopo = document.querySelector("#nome-topo");
+                if (avatarTopo) avatarTopo.textContent = inicial;
+                if (nomeTopo) nomeTopo.textContent = primeiroNome;
+            }
+        })();
+
+        document.querySelector("#sair")?.addEventListener("click", async () => {
+            await apiSair();
+            window.location.href = "index.html";
+        });
+
+        // ===== DADOS DE EVENTOS =====
+        const eventos = [
+            {
+                id: 1, titulo: "Mostra de Projetos Front-end", tipo: "apresentacao",
+                tag: "Apresentação", tagClass: "tag-apresentacao",
+                dia: 30, mes: "JUL", hora: "19h00", local: "Auditório Principal",
+                descricao: "Apresentação dos projetos finais da turma de Programador Front-end. Os alunos demonstrarão suas landing pages, aplicações web e portfólios para professores e convidados.",
+                capa: "linear-gradient(135deg, #1a237e 0%, #283593 50%, #6c8cff 100%)",
+                vagas: "40 vagas", vagasNum: 40, participantes: 28,
+                programa: [
+                    { hora: "19:00", desc: "Abertura e boas-vindas" },
+                    { hora: "19:15", desc: "Apresentações das equipes" },
+                    { hora: "20:30", desc: "Sessão de feedback" },
+                    { hora: "21:00", desc: "Encerramento" }
+                ]
+            },
+            {
+                id: 2, titulo: "Oficina de GitHub e Colaboração", tipo: "oficina",
+                tag: "Oficina", tagClass: "tag-oficina",
+                dia: 2, mes: "AGO", hora: "14h00", local: "Laboratório 3",
+                descricao: "Aprenda a usar Git e GitHub na prática! Esta oficina vai ensinar controle de versão, colaboração em equipe, branches e pull requests.",
+                capa: "linear-gradient(135deg, #0d1b3e 0%, #1a2d6b 50%, #42a5f5 100%)",
+                vagas: "25 vagas", vagasNum: 25, participantes: 18,
+                programa: [
+                    { hora: "14:00", desc: "Introdução ao Git" },
+                    { hora: "14:30", desc: "Prática: repositório e commits" },
+                    { hora: "15:30", desc: "Branches e merge" },
+                    { hora: "16:00", desc: "Pull Requests e colaboração" }
+                ]
+            },
+            {
+                id: 3, titulo: "Palestra: Tendências de IA na Educação", tipo: "palestra",
+                tag: "Palestra", tagClass: "tag-palestra",
+                dia: 5, mes: "AGO", hora: "10h00", local: "Auditório Principal",
+                descricao: "Palestra sobre como a inteligência artificial está transformando a educação profissional. Com convidado especial da área de tecnologia.",
+                capa: "linear-gradient(135deg, #0a1628 0%, #132244 50%, #4db6ac 100%)",
+                vagas: "100 vagas", vagasNum: 100, participantes: 67,
+                programa: [
+                    { hora: "10:00", desc: "Abertura institucional" },
+                    { hora: "10:15", desc: "Palestra: IA e Educação 4.0" },
+                    { hora: "11:15", desc: "Painel de perguntas e respostas" },
+                    { hora: "11:45", desc: "Encerramento" }
+                ]
+            },
+            {
+                id: 4, titulo: "Hackathon Inovação SENAI 2026", tipo: "hackathon",
+                tag: "Hackathon", tagClass: "tag-hackathon",
+                dia: 15, mes: "AGO", hora: "08h00", local: "Espaço Maker",
+                descricao: "24 horas de programação e inovação! Equipes de até 5 pessoas criarão soluções tecnológicas para problemas reais da indústria.",
+                capa: "linear-gradient(135deg, #1a0a3e 0%, #2d1b69 50%, #ce93d8 100%)",
+                vagas: "50 vagas", vagasNum: 50, participantes: 42,
+                programa: [
+                    { hora: "08:00", desc: "Credenciamento e abertura" },
+                    { hora: "09:00", desc: "Divulgação dos desafios" },
+                    { hora: "09:30", desc: "Início da programação" },
+                    { hora: "21:00", desc: "Apresentação dos resultados" },
+                    { hora: "22:00", desc: "Premiação" }
+                ]
+            },
+            {
+                id: 5, titulo: "Cerimônia de Formatura - Turma 2026", tipo: "institucional",
+                tag: "Institucional", tagClass: "tag-institucional",
+                dia: 20, mes: "AGO", hora: "18h00", local: "Centro de Eventos",
+                descricao: "Cerimônia de formatura dos alunos dos cursos de Programador Front-end, Programador Back-end e Técnico em Informática. Um momento especial para celebrar conquistas!",
+                capa: "linear-gradient(135deg, #1a1200 0%, #3d2400 50%, #ffa726 100%)",
+                vagas: "200 vagas", vagasNum: 200, participantes: 156,
+                programa: [
+                    { hora: "18:00", desc: "Abertura e recepção" },
+                    { hora: "18:30", desc: "Hino Nacional" },
+                    { hora: "18:35", desc: "Discurso dos formandos" },
+                    { hora: "19:00", desc: "Entrega de certificados" },
+                    { hora: "20:00", desc: "Encerramento" }
+                ]
+            },
+            {
+                id: 6, titulo: "Workshop: UX Design para Iniciantes", tipo: "oficina",
+                tag: "Workshop", tagClass: "tag-workshop",
+                dia: 8, mes: "AGO", hora: "09h00", local: "Laboratório 1",
+                descricao: "Introdução ao design de experiência do usuário. Aprenda sobre pesquisa, prototipagem e teste de usabilidade de forma prática.",
+                capa: "linear-gradient(135deg, #2a0a1e 0%, #4a1030 50%, #ef5350 100%)",
+                vagas: "30 vagas", vagasNum: 30, participantes: 22,
+                programa: [
+                    { hora: "09:00", desc: "O que é UX Design?" },
+                    { hora: "09:45", desc: "Pesquisa com usuários" },
+                    { hora: "10:30", desc: "Prototipagem no Figma" },
+                    { hora: "11:30", desc: "Teste de usabilidade" }
+                ]
+            },
+            {
+                id: 7, titulo: "Exposição de Robótica Industrial", tipo: "exibicao",
+                tag: "Exibição", tagClass: "tag-exibicao",
+                dia: 12, mes: "AGO", hora: "10h00", local: "Hangar de Exposições",
+                descricao: "Exposição com robôs industriais programados pelos alunos. Demonstrações ao vivo de automação, braços robóticos e sistemas inteligentes.",
+                capa: "linear-gradient(135deg, #0a1a2e 0%, #143050 50%, #b39ddb 100%)",
+                vagas: "80 vagas", vagasNum: 80, participantes: 35,
+                programa: [
+                    { hora: "10:00", desc: "Abertura das exposições" },
+                    { hora: "10:30", desc: "Demo: Braço robótico" },
+                    { hora: "11:00", desc: "Demo: Automação industrial" },
+                    { hora: "12:00", desc: "Sessão interativa" }
+                ]
+            },
+            {
+                id: 8, titulo: "Feira de Inovação e Projetos", tipo: "exibicao",
+                tag: "Exibição", tagClass: "tag-exibicao",
+                dia: 25, mes: "AGO", hora: "09h00", local: "Área Externa",
+                descricao: "Feira de inovação com projetos de todas as áreas: mecânica, informática, eletrônica e logística. Visite os estandes e conheça as soluções desenvolvidas pelos alunos.",
+                capa: "linear-gradient(135deg, #0d1b2e 0%, #162d4a 50%, #66bb6a 100%)",
+                vagas: "300 vagas", vagasNum: 300, participantes: 89,
+                programa: [
+                    { hora: "09:00", desc: "Abertura oficial" },
+                    { hora: "09:30", desc: "Visitação dos estandes" },
+                    { hora: "11:00", desc: "Apresentações nos palcos" },
+                    { hora: "13:00", desc: "Almoço e networking" },
+                    { hora: "14:00", desc: "Continuação" },
+                    { hora: "17:00", desc: "Premiação e encerramento" }
+                ]
+            }
+        ];
+
+        // ===== APRESENTAÇÕES DE TURMA =====
+        const apresentacoes = [
+            {
+                dia: 30, mes: "JUL",
+                titulo: "Apresentação Final — Projeto Landing Page",
+                turma: "Programador Front-end · Turma A",
+                descricao: "Os alunos apresentarão suas landing pages responsivas desenvolvidas durante o curso. Avaliação por banca de professores e convidados da indústria."
+            },
+            {
+                dia: 1, mes: "AGO",
+                titulo: "Defesa de Projeto — Sistema de Controle",
+                turma: "Técnico em Informática · Turma B",
+                descricao: "Defesa dos projetos de sistema de controle de estoque desenvolvidos em equipe, utilizando Python e banco de dados."
+            },
+            {
+                dia: 6, mes: "AGO",
+                titulo: "Pitch de Startups — Ideias de Negócio",
+                turma: "Empreendedorismo Digital · Turma C",
+                descricao: "Apresentação de pitches com ideias de startups. Cada equipe terá 5 minutos para apresentar seu modelo de negócio para jurados."
+            },
+            {
+                dia: 10, mes: "AGO",
+                titulo: "Apresentação — Automação Industrial",
+                turma: "Mecatrônica · Turma A",
+                descricao: "Demonstração de sistemas de automação industrial com CLPs programáveis e supervisório. Apresentações práticas no laboratório."
+            },
+            {
+                dia: 14, mes: "AGO",
+                titulo: "Apresentação — App Mobile",
+                turma: "Desenvolvimento Mobile · Turma B",
+                descricao: "Apresentação dos aplicativos móveis desenvolvidos com React Native. Demonstração em dispositivos reais com avaliação de usabilidade."
+            }
+        ];
+
+        // ===== RENDERIZAR EVENTOS =====
+        function renderizarEventos(filtro = 'todos') {
+            const grid = document.getElementById('grid-eventos');
+            const eventosFiltrados = filtro === 'todos'
+                ? eventos
+                : eventos.filter(e => e.tipo === filtro);
+
+            grid.innerHTML = eventosFiltrados.map(ev => `
+                <div class="card-evento" data-id="${ev.id}" data-tipo="${ev.tipo}">
+                    <div class="evento-capa" style="background: ${ev.capa}">
+                        <span class="evento-tag ${ev.tagClass}">${ev.tag}</span>
+                        <div class="data-badge">
+                            <strong>${String(ev.dia).padStart(2, '0')}</strong>
+                            <small>${ev.mes}</small>
+                        </div>
+                    </div>
+                    <div class="evento-corpo">
+                        <h3>${ev.titulo}</h3>
+                        <p>${ev.descricao.substring(0, 100)}...</p>
+                        <div class="evento-meta">
+                            <span><i class="fa-regular fa-clock"></i> ${ev.hora}</span>
+                            <span><i class="fa-solid fa-location-dot"></i> ${ev.local}</span>
+                            <span><i class="fa-solid fa-users"></i> ${ev.participantes} inscritos</span>
+                        </div>
+                    </div>
+                    <div class="evento-rodape">
+                        <span class="vagas"><strong>${ev.vagas}</strong> restantes</span>
+                        <button class="btn-participar" onclick="confirmarParticipacao(${ev.id}, this)">Participar</button>
+                    </div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.card-evento').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('btn-participar')) return;
+                    const id = parseInt(this.dataset.id);
+                    abrirModalEvento(id);
+                });
+            });
+        }
+
+        // ===== RENDERIZAR APRESENTAÇÕES =====
+        function renderizarApresentacoes() {
+            const lista = document.getElementById('lista-apresentacoes');
+            lista.innerHTML = apresentacoes.map(ap => `
+                <div class="card-apresentacao">
+                    <div class="apresentacao-data">
+                        <strong>${String(ap.dia).padStart(2, '0')}</strong>
+                        <small>${ap.mes}</small>
+                    </div>
+                    <div class="apresentacao-info">
+                        <h3>${ap.titulo}</h3>
+                        <p>${ap.descricao}</p>
+                        <span class="turma-badge">${ap.turma}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== FILTROS =====
+        document.querySelectorAll('.tab-evento').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab-evento').forEach(t => t.classList.remove('ativo'));
+                this.classList.add('ativo');
+                renderizarEventos(this.dataset.filtro);
+            });
+        });
+
+        // ===== CONFIRMAR PARTICIPAÇÃO =====
+        function confirmarParticipacao(id, btn) {
+            event.stopPropagation();
+            if (btn.classList.contains('confirmado')) {
+                btn.classList.remove('confirmado');
+                btn.textContent = 'Participar';
+            } else {
+                btn.classList.add('confirmado');
+                btn.textContent = 'Confirmado ✓';
+                mostrarToast('Participação confirmada com sucesso!');
+            }
+        }
+
+        // ===== MODAL =====
+        function abrirModalEvento(id) {
+            const ev = eventos.find(e => e.id === id);
+            if (!ev) return;
+
+            document.getElementById('modal-evento-capa').style.background = ev.capa;
+            document.getElementById('modal-evento-titulo').textContent = ev.titulo;
+            document.getElementById('modal-evento-descricao').textContent = ev.descricao;
+
+            const tag = document.getElementById('modal-evento-tag');
+            tag.textContent = ev.tag;
+            tag.className = 'evento-tag ' + ev.tagClass;
+            tag.style.position = 'static';
+
+            document.getElementById('modal-evento-meta').innerHTML = `
+                <span><i class="fa-regular fa-calendar"></i> ${String(ev.dia).padStart(2, '0')} ${ev.mes} 2026</span>
+                <span><i class="fa-regular fa-clock"></i> ${ev.hora}</span>
+                <span><i class="fa-solid fa-location-dot"></i> ${ev.local}</span>
+                <span><i class="fa-solid fa-users"></i> ${ev.participantes}/${ev.vagasNum} inscritos</span>
+            `;
+
+            document.getElementById('modal-evento-programa').innerHTML = ev.programa.map(p => `
+                <div class="programa-item">
+                    <span class="hora">${p.hora}</span>
+                    <span>${p.desc}</span>
+                </div>
+            `).join('');
+
+            const btn = document.getElementById('modal-evento-btn');
+            btn.onclick = function() {
+                this.textContent = 'Confirmado ✓';
+                this.style.background = 'rgba(46, 125, 50, 0.2)';
+                this.style.color = '#66bb6a';
+                this.style.border = '1px solid rgba(46, 125, 50, 0.3)';
+                mostrarToast('Participação confirmada!');
+            };
+
+            document.getElementById('modal-evento-detalhe').classList.add('aberto');
+        }
+
+        document.getElementById('fechar-modal-evento').addEventListener('click', () => {
+            document.getElementById('modal-evento-detalhe').classList.remove('aberto');
+        });
+        document.getElementById('modal-evento-detalhe').addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('aberto');
+        });
+
+        // ===== CALENDÁRIO =====
+        function renderizarCalendario() {
+            const grid = document.getElementById('dias-grid');
+            const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+            const diasComEvento = [2, 5, 8, 10, 12, 14, 15, 20, 25, 28];
+
+            let html = diasSemana.map(d => `<span class="dia-header">${d}</span>`).join('');
+            for (let i = 0; i < 6; i++) html += `<span class="dia"></span>`;
+            for (let d = 1; d <= 31; d++) {
+                const cls = ['dia'];
+                if (diasComEvento.includes(d)) cls.push('tenha-evento');
+                if (d === 30) cls.push('hoje');
+                html += `<span class="${cls.join(' ')}">${d}</span>`;
+            }
+            grid.innerHTML = html;
+        }
+
+        // ===== TIMELINE =====
+        function renderizarTimeline() {
+            const timeline = document.getElementById('timeline-eventos');
+            const proximos = [...eventos].sort((a, b) => a.dia - b.dia).slice(0, 4);
+            timeline.innerHTML = proximos.map(ev => `
+                <div class="timeline-item">
+                    <div class="t-dia">${String(ev.dia).padStart(2, '0')} ${ev.mes} · ${ev.hora}</div>
+                    <h4>${ev.titulo}</h4>
+                    <small>${ev.local}</small>
+                </div>
+            `).join('');
+        }
+
+        // ===== TOAST =====
+        function mostrarToast(msg) {
+            let toast = document.getElementById('toast-msg');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'toast-msg';
+                toast.className = 'toast';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = msg;
+            toast.style.opacity = '1';
+            setTimeout(() => { toast.style.opacity = '0'; }, 3000);
+        }
+
+        // ===== BUSCA =====
+        document.getElementById('busca').addEventListener('input', function() {
+            const q = this.value.toLowerCase().trim();
+            if (!q) { renderizarEventos(document.querySelector('.tab-evento.ativo').dataset.filtro); return; }
+            const filtrados = eventos.filter(e =>
+                e.titulo.toLowerCase().includes(q) ||
+                e.descricao.toLowerCase().includes(q) ||
+                e.tipo.toLowerCase().includes(q) ||
+                e.local.toLowerCase().includes(q)
+            );
+            document.getElementById('grid-eventos').innerHTML = filtrados.map(ev => `
+                <div class="card-evento" data-id="${ev.id}">
+                    <div class="evento-capa" style="background: ${ev.capa}">
+                        <span class="evento-tag ${ev.tagClass}">${ev.tag}</span>
+                        <div class="data-badge"><strong>${String(ev.dia).padStart(2, '0')}</strong><small>${ev.mes}</small></div>
+                    </div>
+                    <div class="evento-corpo">
+                        <h3>${ev.titulo}</h3>
+                        <p>${ev.descricao.substring(0, 100)}...</p>
+                        <div class="evento-meta">
+                            <span><i class="fa-regular fa-clock"></i> ${ev.hora}</span>
+                            <span><i class="fa-solid fa-location-dot"></i> ${ev.local}</span>
+                        </div>
+                    </div>
+                    <div class="evento-rodape">
+                        <span class="vagas"><strong>${ev.vagas}</strong></span>
+                        <button class="btn-participar" onclick="confirmarParticipacao(${ev.id}, this)">Participar</button>
+                    </div>
+                </div>
+            `).join('');
+        });
+
+        // ===== INIT =====
+        document.addEventListener('DOMContentLoaded', () => {
+            renderizarEventos();
+            renderizarApresentacoes();
+            renderizarCalendario();
+            renderizarTimeline();
+        });
+    </script>
+</body>
+
+</html>
